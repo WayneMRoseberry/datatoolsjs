@@ -25,6 +25,7 @@ router.get('/namespaces', function (req, res) {
 
     var namespaces = provider.Namespaces();
     var result = [];
+
     try {
         for (const namespace of namespaces) {
             result.push({name:namespace, schemadefs:`${hostBase}/api/schemadefs?namespace=${namespace}`});
@@ -51,6 +52,7 @@ router.get('/schemadefs', function (req, res) {
     var hostBase = getBaseHostURL(req);
     console.log(`schemadefs namespace:${namespace}`);
     var result = [];
+
     try {
 
         var schemaDefs = provider.SchemaDefs(namespace);
@@ -80,6 +82,7 @@ router.get('/schemadef', function (req, res) {
     var namespace = req.query.namespace;
     var schemaname = req.query.schemaname;
     var result = {};
+
     try {
         if (namespace == null || schemaname == null) {
             throw CommonSchema.NULLVALUEERROR;
@@ -105,6 +108,7 @@ router.post('/schemadef', function (req, res) {
     console.log('POST schemadef');
     console.log(` schemaDef:${JSON.parse(JSON.stringify(req.body))}`);
     var response = {};
+
     try {
         const schemaDef = JSON.parse(JSON.stringify(req.body));
         if (typeof schemaDef.Namespace != 'string' || typeof schemaDef.SchemaName != 'string') {
@@ -148,6 +152,7 @@ router.get('/schemadef/getrandomexample', function (req, res) {
     }
     console.log(`schemadef namespace:${namespace}, schemaname:${schemaname}`);
     var resultset = [];
+
     try {
         var schemaDef = provider.getSchemaDef(namespace, schemaname);
 

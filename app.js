@@ -11,10 +11,12 @@ var api = require('./routes/api');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var pages = require('./routes/pages');
+var cors = require('cors');
 
 api.configure(config);
 
 var app = express();
+app.use(cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
