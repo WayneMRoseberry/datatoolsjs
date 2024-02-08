@@ -35,6 +35,8 @@
   <ItemGroup>
     <Content Include=".eslintrc.json" />
     <Content Include="app.js" />
+    <Content Include="pages\documentation.html" />
+    <Content Include="pages\mainindex.js" />
     <Content Include="routes\documentation.html">
       <SubType>Code</SubType>
     </Content>

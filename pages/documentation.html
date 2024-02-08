@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>DataMaker Documentation</title>
+</head>
+<body>
+    <h1>DataMaker REST API</h1>
+    <span style="display:inline-block;margin-left:1em;">
+        <h2>Namespaces</h2>
+        <span style="display:inline-block;margin-left:2em;">
+            <h3>GET http://server/api/namespaces</h3>
+            <p>Returns a list of registered namespaces.</p>
+        </span>
+
+        <h2>SchemaDef</h2>
+        <span style="display:inline-block;margin-left:2em;">
+
+
+            <h3>GET http://server/api/schemadef?namespace=(namespace)&schemaname=(schemaname)</h3>
+            <p>Returns the specified schema definition.</p>
+            <p>Arguments:</p>
+            <ul>
+                <li><b>namespace</b>: The namespace to retrieve schemadef from.</li>
+                <li><b>schemaname</b>: The name of the schema definition, unique within the namespace.</li>
+            </ul>
+            <h3>POST http://server/api/schemadef</h3>
+            <p>Adds the defined schema to the store.</p>
+            <p>Arguments:</p>
+            <ul>
+                <li><i>body</i>: Json format schema definition.</li>
+            </ul>
+        </span>
+        <h2>SchemaDefs</h2>
+        <span style="display:inline-block;margin-left:2em;">
+            <h3>GET http://server/api/schemadefs?namespace=(namespace)</h3>
+            <p>Returns all the schema definitions within the namespace.</p>
+            <p>Arguments:</p>
+            <ul>
+                <li><b>namespace</b>: The namespace for the returned schema definitions.</li>
+            </ul>
+        </span>
+
+        <h2>GetRandomExample</h2>
+        <span style="display:inline-block;margin-left:2em;">
+            <h3>GET http://server/api/schemadef/getrandomexample?namespace=(namespace)&schemaname=(schemaname)&count=(number)</h3>
+            <p>Returns the specified number of random examples based on the specified schema definition.</p>
+            <p>Arguments:</p>
+            <ul>
+                <li><b>namespace</b>: The namespace to which the schema definition belongs.</li>
+                <li><b>scheamadef</b>: The schema definition to generate examples for.</li>
+                <li><b>count</b>: The number of examples to return.</li>
+            </ul>
+        </span>
+
+    </span>
+    <h1>DataMaker Json Schema</h1>
+    <span style="display:inline-block;margin-left:1em;">
+        <h2>SchemaDef</h2>
+        <span style="display:inline-block;margin-left:2em;">
+            <code>
+                {<br />
+                "Namespace":"namespace",<br />
+                "SchemaName":"schemaname",<br />
+                "RootSchemaObject": (schema object)<br />
+                }
+            </code>
+            <p><b>Example</b></p>
+            <p>
+                The following schema definition creates a schema named "exampleschema" in the "examplenamespace" namespace with a single
+                static value object equal to "example value".
+            </p>
+            <code>
+                {<br />
+                "Namespace":"examplenamespace",<br />
+                "SchemaName":"exampleschema",<br />
+                "RootSchemaObject": <br />
+                {<br />
+                "ObjectTypeName":"StaticSchemaObject",<br />
+                "StaticValue": "example value"<br />
+                }<br />
+                }
+            </code>
+        </span>
+
+        <h2>ChoiceSchemaObject</h2>
+
+        <span style="display:inline-block;margin-left:2em;">
+            <code>
+                {<br />
+                "ObjectTypeName":"ChoiceSchemaObject",<br />
+                "ChoiceArray": [value1, value2]<br />
+                }
+            </code>
+            <p>
+                The ChoiceSchemaObject represents a set of values of which only one is
+                selected. The values in the ChoiceArray may be a mix of strings and other schema objects.
+            </p>
+            <p><b>Example</b></p>
+            <p>
+                The following creates a choice schema object whose posible values are "option1" and a static schema object
+                whose value is "option2".
+            </p>
+            <code>
+                {<br />
+                "ObjectTypeName":"ChoiceSchemaObject",<br />
+                "ChoiceArray": ["option1", {"ObjectTypeName":"StaticSchemaObject", "StaticValue":"option2"}],<br />
+                }
+            </code>
+        </span>
+        <h2>OptionalSchemaObject</h2>
+
+        <span style="display:inline-block;margin-left:2em;">
+            <code>
+                {<br />
+                "ObjectTypeName":"OptionalSchemaObject",<br />
+                "OptionalValue": (value)
+                }<br />
+            </code>
+            <p>
+                The OptionalSchemaObject represents value that is allowed by not required.
+                The optional value field can either be a string value, or another schema object.
+                Self-references to the containing schema definition below an OptionalSchemaObject
+                are not considered an infinite loop with the exception of descendent objects
+                that reference external schema definitions with infinite loops of their own.
+            </p>
+            <p><b>Example</b></p>
+            <p>
+                The following creates a optional schema object whose value is "I don't have to be here but I am.".
+            </p>
+            <code>
+                {<br />
+                "ObjectTypeName":"OptionalSchemaObject",<br />
+                "OptionalValue": "I don't have to be here but I am.",<br />
+                }
+            </code>
+        </span>
+
+        <h2>RangeAlphaSchemaObject</h2>
+
+        <span style="display:inline-block;margin-left:2em;">
+            <code>
+                {<br />
+                "ObjectTypeName":"RangeAlphaSchemaObject",<br />
+                "MinAlpha": number,<br />
+                "MaxAlpha": number<br />
+                }<br />
+            </code>
+            <p>
+                The RangeAlphaSchemaObject represents an character value between MinAlpha and MaxAlpha inclusive.
+                Both MinAlpha and MaxAlpha are required, both must be single characters and MaxAlpha must be larger than or equal to MinAlpha.
+                Order is regular ASCII character order.
+            </p>
+            <p><b>Example</b></p>
+            <p>
+                The following creates a range alpha schema object whose value is between m and q.
+            </p>
+            <code>
+                {<br />
+                "ObjectTypeName":"RangeAlphaSchemaObject",<br />
+                "MinAlpha": "m",<br />
+                "MaxAlpha": "q"<br />
+                }
+            </code>
+        </span>
+
+        <h2>RangeNumericSchemaObject</h2>
+
+        <span style="display:inline-block;margin-left:2em;">
+            <code>
+                {<br />
+                "ObjectTypeName":"RangeNumericSchemaObject",<br />
+                "MinNumeric": number,<br />
+                "MaxNumeric": number<br />
+                }<br />
+            </code>
+            <p>
+                The RangeNumericSchemaObject represents an integer value between MinNumeric and MaxNumeric inclusive.
+                Both MinNumeric and MaxNumeric are required and MaxNumeric must be larger than or equal to MinNumeric.
+            </p>
+            <p><b>Example</b></p>
+            <p>
+                The following creates a range numeric schema object whose value is between 15 and 75.
+            </p>
+            <code>
+                {<br />
+                "ObjectTypeName":"RangeNumericSchemaObject",<br />
+                "MinNumeric": 15,<br />
+                "MaxNumeric": 75<br />
+                }
+            </code>
+        </span>
+
+        <h2>ReferenceSchemaObject</h2>
+
+        <span style="display:inline-block;margin-left:2em;">
+            <code>
+                {<br />
+                "ObjectTypeName":"ReferenceSchemaObject",<br />
+                "Namespace": "namespace",<br />
+                "SchemaName": "schemaname"<br />
+                }<br />
+            </code>
+            <p>
+                The ReferenceSchemaObject indicates a schema definition based on the Namespace and SchemaName
+                fields. The schema definition must have been defined before creation of this schema definition,
+                or must be a reference to itself. Self-references are used for recursive schema build. Infinite
+                loops are caused by any reference back to a prior used schema definition which does not have some
+                escape mechanism via optional or choice based schema objects.
+            </p>
+            <p><b>Example</b></p>
+            <p>
+                The following creates a reference schema object that indicates a schema named "exampleschema" in the namespace "examplenamespace".
+            </p>
+            <code>
+                {<br />
+                "ObjectTypeName":"ReferenceSchemaObject",<br />
+                "Namespace": "examplenamespace",<br />
+                "SchemaName":"exampleschema"<br />
+                }
+            </code>
+        </span>
+
+        <h2>SequenceSchemaObject</h2>
+
+        <span style="display:inline-block;margin-left:2em;">
+            <code>
+                {<br />
+                "ObjectTypeName":"SequenceSchemaObject",<br />
+                "SequenceArray": [(value1), (value2)]<br />
+                }
+            </code>
+            <p>The field SequenceArray can be a mixed array of string values and other schema objects. All items in the SequenceArray are treated as required objects in the schema, presented in order.</p>
+            <p><b>Example</b></p>
+            <p>
+                The following creates a sequence schema object with a sequence consisting of a string and a StaticSchemaObject.
+            </p>
+            <code>
+                {<br />
+                "ObjectTypeName":"SequenceSchemaObject",<br />
+                "SequenceArray": ["value1", {"ObjectTypeName":"StaticSchemaObject", "StaticValue":"example value"}]<br />
+                }
+            </code>
+        </span>
+
+        <h2>StaticSchemaObject</h2>
+
+        <span style="display:inline-block;margin-left:2em;">
+            <code>
+                {<br />
+                "ObjectTypeName":"StaticSchemaObject",<br />
+                "StaticValue": (string)<br />
+                }
+            </code>
+            <p><b>Example</b></p>
+            <p>
+                The following creates a schema object whose value is equal to "example value".
+            </p>
+            <code>
+                {<br />
+                "ObjectTypeName":"StaticSchemaObject",<br />
+                "StaticValue": "example value"<br />
+                }
+            </code>
+        </span>
+            
+        </span>
+</body>
+</html>
