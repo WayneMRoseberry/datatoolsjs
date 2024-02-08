@@ -10,7 +10,7 @@ const loadSchemaDefs = (self) => {
 };
 const loadNamespaces = () => {
     const xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "http://localhost:1337/api/namespaces", false);
+    xhttp.open("GET", "../api/namespaces", false);
     xhttp.send();
     const namespaces = JSON.parse(xhttp.responseText);
     var select = document.getElementById('namespacelist');
@@ -47,26 +47,25 @@ const loadSchemaDef = (self) => {
         randomelement.innerHTML = randomelement.innerHTML + `<span>${example.ExampleValue}</span><br/>`;
     }
 
-    //randomelement.innerHTML = `<pre>${randomjson}</pre>`;
 };
 
 const getSchemaDefsEndpoint = (namespace) => {
     const xhttp = new XMLHttpRequest();
-    xhttp.open("GET", `http://localhost:1337/api/schemadefs?namespace=${namespace}`, false);
+    xhttp.open("GET", `../api/schemadefs?namespace=${namespace}`, false);
     xhttp.send();
     return JSON.parse(xhttp.responseText);
 };
 
 const getSchemaDefEndpoint = (namespace, schemaname) => {
     const xhttp = new XMLHttpRequest();
-    xhttp.open("GET", `http://localhost:1337/api/schemadef?namespace=${namespace}&schemaname=${schemaname}`, false);
+    xhttp.open("GET", `../api/schemadef?namespace=${namespace}&schemaname=${schemaname}`, false);
     xhttp.send();
     return JSON.parse(xhttp.responseText);
 };
 
 const getRandomExampleEndpoint = (namespace, schemaname) => {
     const xhttp = new XMLHttpRequest();
-    xhttp.open("GET", `http://localhost:1337/api/schemadef/getrandomexample?namespace=${namespace}&schemaname=${schemaname}&count=10`, false);
+    xhttp.open("GET", `../api/schemadef/getrandomexample?namespace=${namespace}&schemaname=${schemaname}&count=10`, false);
     xhttp.send();
     return JSON.parse(xhttp.responseText);
 };
