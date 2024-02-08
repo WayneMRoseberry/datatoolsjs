@@ -13,9 +13,7 @@ router.get('/*', function (req, res) {
     fs.readFile(fileName, { encoding: 'utf-8' }, function (err, data) {
         if (!err) {
             console.log(` pages data received from ${fileName}, length:${data.length}, writing to response.`);
-            res.writeHead(200, { 'Content-Type': 'text/html' });
-            res.write(data);
-            res.end();
+            res.send(data);
         }
         else {
             console.log(err);
