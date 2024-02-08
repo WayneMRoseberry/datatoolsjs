@@ -35,15 +35,13 @@
   <ItemGroup>
     <Content Include=".eslintrc.json" />
     <Content Include="app.js" />
-    <Content Include="pages\documentation.html">
+    <Content Include="routes\documentation.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="pages\mainindex.html">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="pages\mainindex.js">
-      <SubType>Code</SubType>
-    </Content>
+    <Content Include="routes\mainindex.js" />
     <Content Include="routes\pages.js" />
     <Content Include="serviceconfig.js" />
     <Content Include="datamakerlibs\commonschema.js" />
