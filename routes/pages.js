@@ -6,7 +6,7 @@ var path = require('path');
 
 /* GET home page. */
 router.get('/*', function (req, res) {
-    var pagesdir = path.join(__dirname, '..\\pages');
+    var pagesdir = path.join(__dirname, '../pages');
     var fileName = path.join(pagesdir, req.path);
     console.log(` GET pages routing ${req.path}, opening ${fileName}, originalurl:${req.originalUrl}`);
 
