@@ -13,7 +13,13 @@ router.get('/*', function (req, res) {
     fs.readFile(fileName, { encoding: 'utf-8' }, function (err, data) {
         if (!err) {
             console.log(` pages data received from ${fileName}, length:${data.length}, writing to response.`);
-            res.send(data);
+            var ctype = 'text/html';
+            if (req.path.endsWith('.js')) {
+                ctype = 'text/javascript';
+            }
+            res.writeHead(200, { 'Content-Type': ctype });
+            res.write(data);
+            res.end();
         }
         else {
             console.log(err);
