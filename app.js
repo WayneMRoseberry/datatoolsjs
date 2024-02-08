@@ -10,6 +10,7 @@ const config = require('./serviceconfig');
 var api = require('./routes/api');
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var pages = require('./routes/pages');
 
 api.configure(config);
 
@@ -30,11 +31,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/api', api);
-app.get('/pages/*', (req, res) => {
-    var p = __dirname + req.path;
-    console.log(`routing pages: ${p}`);
-    res.sendFile(p);
-});
+app.use('/pages', pages);
+//app.get('/pages/*', (req, res) => {
+//    var p = __dirname + req.path;
+//    console.log(`routing pages: ${p}`);
+//    res.sendFile(p);
+//});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
