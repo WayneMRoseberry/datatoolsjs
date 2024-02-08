@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "datamaker", "datamaker.njsproj", "{9D341B4D-BE1D-4025-A04E-160EBBE26651}"
+Project("{86287ec3-2c93-42a9-9164-abe960a44fb6}") = "datamakerjs", "datamakerjs.njsproj", "{86287ec3-2c93-42a9-9164-abe960a44fb6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9D341B4D-BE1D-4025-A04E-160EBBE26651}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9D341B4D-BE1D-4025-A04E-160EBBE26651}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9D341B4D-BE1D-4025-A04E-160EBBE26651}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9D341B4D-BE1D-4025-A04E-160EBBE26651}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86287ec3-2c93-42a9-9164-abe960a44fb6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86287ec3-2c93-42a9-9164-abe960a44fb6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86287ec3-2c93-42a9-9164-abe960a44fb6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86287ec3-2c93-42a9-9164-abe960a44fb6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

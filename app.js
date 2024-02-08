@@ -30,8 +30,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/api', api);
-app.get('/*', (req, res) => {
-    res.sendFile(`${__dirname}/pages/${req.path}.html`);
+app.get('/pages/*', (req, res) => {
+    var p = __dirname + req.path;
+    console.log(`routing pages: ${p}`);
+    res.sendFile(p);
 });
 
 // catch 404 and forward to error handler
@@ -70,3 +72,10 @@ app.set('port', process.env.PORT || 3000);
 var server = app.listen(app.get('port'), function () {
     debug('Express server listening on port ' + server.address().port);
 });
+
+function getBaseHostURL(req) {
+    const proxyHost = req.headers["x-forwarded-host"];
+    const host = proxyHost ? proxyHost : req.headers.host;
+    const hostBase = `${req.protocol}://${host}`;
+    return hostBase;
+}

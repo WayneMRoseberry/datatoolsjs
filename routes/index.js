@@ -1,17 +1,26 @@
 'use strict';
 var express = require('express');
 var router = express.Router();
+var fs = require('fs');
+var path = require('path');
 
 /* GET home page. */
 router.get('/', function (req, res) {
     //res.render('index', { title: 'Express' });
 
-    var content = '<html><body><br/><br/><a href="./api">a link to the page</a>';
-    content += '<br/><a href="./api/namespaces">all the namespaces</a>';
-    content += '<br/><a href="./documentation">DataMaker Documentation</a>'
-    content += '</body ></html > ';
+    var fileName = path.join(__dirname, "../pages/mainindex.html");
 
-    res.send(content);
+    fs.readFile(fileName, { encoding: 'utf-8' }, function (err, data) {
+        if (!err) {
+            console.log(`received data: ${data}`);
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.write(data);
+            res.end();
+        }
+        else {
+            console.log(err);
+        }
+    });
 });
 
 module.exports = router;

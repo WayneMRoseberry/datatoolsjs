@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>DataMaker</title>
+</head>
+<body>
+    <div><a href="../api/namespaces">REST API to list of namespaces.</a></div>
+    <div><a href="../pages/Documentation.html">Datamaker Documentation</a></div>
+    <div>
+        <span>
+            <table>
+                <tr>
+                    <td>Select a schema namespace</td>
+                    <td>Select a schema</td>
+                </tr>
+                <tr>
+                    <td><select id="namespacelist" onchange="loadSchemaDefs(this)"></select></td>
+                    <td><select id="schemalist" onchange="loadSchemaDef(this)"></select></td>
+                </tr>
+            </table>
+            <br />
+            <table border="1">
+                <tr style="vertical-align:top">
+                    <th>Schema Definition</th>
+                    <th>Random Examples</th>
+                </tr>
+                <tr style="vertical-align:top">
+                    <td><div id="schemablob"></div></td>
+                    <td><div id="randomexamples"></div></td>
+                </tr>
+            </table>
+            
+
+
+        </span>
+    </div>
+
+    <script src="../pages/mainindex.js"></script>
+
+</html>

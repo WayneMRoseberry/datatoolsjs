@@ -38,6 +38,12 @@
     <Content Include="pages\documentation.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="pages\mainindex.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="pages\mainindex.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="serviceconfig.js" />
     <Content Include="datamakerlibs\commonschema.js" />
     <Content Include="datamakerlibs\datamaker.js">
@@ -72,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="datamakerlibs\" />
+    <Folder Include="scripts\" />
     <Folder Include="pages\" />
     <Folder Include="test\" />
     <Folder Include="public\" />
