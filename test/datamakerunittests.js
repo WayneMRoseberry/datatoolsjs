@@ -409,6 +409,23 @@ describe('DataMaker test suite', function () {
             var schemaDef = new CommonSchema.SchemaDef("testschema", choiceObject, "testnamespace");
             expect(DataMaker.schemaHasInfiniteLoop(new ProviderMock(), "testnamespace", schemaDef)).toEqual(true);
         });
+
+        // This doesn't really check anything, I just used it to
+        // see what the DOT looked like. I need to write a much
+        // better checking routine first.
+        //it('toDot', function () {
+        //    var staticObject = new CommonSchema.StaticSchemaObject("Value1");
+        //    var staticObject2 = new CommonSchema.StaticSchemaObject("static value 2")
+        //    var optOjbect = new CommonSchema.OptionalSchemaObject("this is optional");
+        //    var optOjbect2 = new CommonSchema.OptionalSchemaObject(staticObject2);
+        //    var staticObject3 = new CommonSchema.StaticSchemaObject("static choose 3");
+        //    var choiceObject = new CommonSchema.ChoiceSchemaObject(["choose1", "choose2", staticObject3])
+        //    var refObject = new CommonSchema.ReferenceSchemaObject("newnamespace", "someexternalschema");
+        //    var seqObject2 = new CommonSchema.SequenceSchemaObject([staticObject, optOjbect, optOjbect2, choiceObject, refObject]);
+        //    var schemaDef = new CommonSchema.SchemaDef("testschema", seqObject2, "testnamespace");
+        //    var theDOT = DataMaker.toDOT(schemaDef);
+        //    expect(theDOT).toEqual("something amazing");
+        //});
     });
 
 

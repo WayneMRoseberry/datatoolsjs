@@ -104,6 +104,33 @@ router.get('/schemadef', function (req, res) {
     res.send(result);
 });
 
+router.get('/schemadef/dot', function (req, res) {
+    var namespace = req.query.namespace;
+    var schemaname = req.query.schemaname;
+    var result = {};
+
+    try {
+        if (namespace == null || schemaname == null) {
+            throw CommonSchema.NULLVALUEERROR;
+        }
+        console.log(`schemadef/json namespace:${namespace}, schemaname:${schemaname}`);
+        var schemaDef = provider.getSchemaDef(namespace, schemaname);
+        result = Datamaker.toDOT(schemaDef);
+    }
+    catch (err) {
+        if (exceptionIsKnownInvalidSchemaConditions(err)) {
+            res.status(400);
+            result["error"] = `invalid schema: ${err}`;
+        }
+        else {
+            console.log(`error:${err}`);
+            throw err;
+        }
+    }
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end(result);
+});
+
 router.post('/schemadef', function (req, res) {
     console.log('POST schemadef');
     console.log(` schemaDef:${JSON.parse(JSON.stringify(req.body))}`);

@@ -47,6 +47,10 @@ const loadSchemaDef = (self) => {
         randomelement.innerHTML = randomelement.innerHTML + `<span>${example.ExampleValue}</span><br/>`;
     }
 
+    var schemaDefJson = getSchemaDefDOTEndpoint(namespace, schemaName);
+    var dotElement = document.getElementById("dot");
+    dotElement.innerText = schemaDefJson;
+
 };
 
 const getSchemaDefsEndpoint = (namespace) => {
@@ -61,6 +65,13 @@ const getSchemaDefEndpoint = (namespace, schemaname) => {
     xhttp.open("GET", `../api/schemadef?namespace=${namespace}&schemaname=${schemaname}`, false);
     xhttp.send();
     return JSON.parse(xhttp.responseText);
+};
+
+const getSchemaDefDOTEndpoint = (namespace, schemaname) => {
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("GET", `../api/schemadef/dot?namespace=${namespace}&schemaname=${schemaname}`, false);
+    xhttp.send();
+    return xhttp.responseText;
 };
 
 const getRandomExampleEndpoint = (namespace, schemaname) => {

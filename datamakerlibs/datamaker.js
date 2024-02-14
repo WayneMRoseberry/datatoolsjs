@@ -28,7 +28,14 @@ function schemaHasInfiniteLoop(schemaProvider,namespace, schemaDef, seenAlreadyA
     }
 };
 
-module.exports = { getRandomExample, schemaHasInfiniteLoop};
+function toDOT(schemaDef) {
+    var thing = 'schemanode:F1->node1:F0;\n'
+    thing = thing + `schemanode [label="<F0>SchemaDef|${schemaDef.Namespace}|${schemaDef.SchemaName}|<F1>", shape="record"];\n`;
+    thing = thing + `${schemaObjectToDOT(schemaDef.RootSchemaObject,1,"node")}`;
+    return `digraph{\ngraph [rankdir="LR"]\n${thing}}`;
+};
+
+module.exports = { getRandomExample, schemaHasInfiniteLoop, toDOT};
 
 function evaluateSchemaObject(schemaProvider, decider, schemaObject) {
     if (typeof schemaObject == 'undefined') {
@@ -192,4 +199,94 @@ function schemaObjectHasInfiniteLoop(schemaProvider, schemaDefName, schemaObject
 
 function stringIsSpaceOrEmpty(min) {
     return min == '' || min == '';
+}
+
+function schemaObjectToDOT(schemaObject, nodeid, nodeprefix) {
+    var restofit = ``;
+
+    var childrenArray = [];
+    var nodePtrArray = [];
+    var nodeIdString = `${nodeprefix}${nodeid}`;
+
+    let typeName = "";
+    if (typeof schemaObject != 'undefined' && typeof schemaObject.ObjectTypeName != 'undefined') {
+        typeName = schemaObject.ObjectTypeName;
+    }
+    switch (typeName) {
+        case "StaticSchemaObject":
+            {
+                restofit = restofit + `${schemaObject.StaticValue}`;
+                break;
+            }
+        case "RangeAlphaSchemaObject":
+            {
+                restofit = restofit + `${schemaObject.MinAlpha}|${schemaObject.MaxAlpha}`;
+                break;
+            }
+        case "RangeAlphaNumeric":
+            {
+                restofit = restofit + `${schemaObject.MinNumeric}|${schemaObject.MaxNumeric}`;
+                break;
+            }
+        case "ReferenceSchemaObject":
+            {
+                restofit = restofit + `${schemaObject.Namespace}|${schemaObject.SchemaName}`;
+                break;
+            }
+        case "OptionalSchemaObject":
+            {
+                if (typeof schemaObject.OptionalValue == 'string') {
+                    restofit = restofit + schemaObject.OptionalValue;
+                }
+                else {
+                    var childNodeId = `${nodeIdString}_1`;
+                    childrenArray.push(schemaObjectToDOT(schemaObject.OptionalValue,1, `${nodeIdString}_`));
+                    restofit = restofit + '<F1>';
+                    nodePtrArray.push(`${nodeIdString}:<F1> -> ${childNodeId}:<F0>`);
+                }
+                break;
+            }
+        case "ChoiceSchemaObject":
+            {
+                var itemArray = schemaObject.ChoiceArray;
+                restofit = ProcessArrayObjects(itemArray, nodeIdString, nodePtrArray, childrenArray, restofit);
+                break;
+            }
+        case "SequenceSchemaObject":
+            {
+                var itemArray = schemaObject.SequenceArray;
+                restofit = ProcessArrayObjects(itemArray, nodeIdString, nodePtrArray, childrenArray, restofit);
+                break;
+            }
+        default:
+            {
+                return schemaObject;
+            }
+    }
+
+    var objectNodeData = `${nodeIdString} [label="<F0>${schemaObject.ObjectTypeName}|${restofit}", shape="record"];\n`;
+    var childString = (childrenArray.length == 0) ? '' : `${childrenArray.join('')}`;
+    var nodePtrString = (nodePtrArray.length == 0) ? '' : `${nodePtrArray.join(';\n')};\n`;
+
+    return `${objectNodeData}${childString}${nodePtrString}`;
+}
+
+function ProcessArrayObjects(itemArray, nodeIdString, nodePtrArray, childrenArray, restofit) {
+    var seqArray = [];
+    for (var i = 0; i < itemArray.length; i++) {
+
+        var currentObject = itemArray[i];
+        var currentElemPush = `<F${i + 1}>`;
+        if (typeof currentObject == 'string') {
+            currentElemPush = currentObject;
+        }
+        else {
+            var childNodeId = `${nodeIdString}_${i + 1}`;
+            nodePtrArray.push(`${nodeIdString}:${currentElemPush} -> ${childNodeId}:<F0>`);
+            childrenArray.push(schemaObjectToDOT(currentObject, i + 1, `${nodeIdString}_`));
+        }
+        seqArray.push(currentElemPush);
+    }
+    restofit = restofit + seqArray.join('|');
+    return  restofit ;
 }
