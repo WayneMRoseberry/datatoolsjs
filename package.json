@@ -10,6 +10,8 @@
     "name": ""
   },
   "dependencies": {
+    "@viz-js/lang-dot": "^1.0.4",
+    "@viz-js/viz": "^3.2.4",
     "body-parser": "^1.15.0",
     "cookie-parser": "^1.4.0",
     "cors": "^2.8.5",
@@ -22,7 +24,9 @@
     "serve-favicon": "^2.3.0"
   },
   "devDependencies": {
-    "eslint": "^8.21.0"
+    "eslint": "^8.21.0",
+    "webpack": "^5.90.1",
+    "webpack-cli": "^5.1.4"
   },
   "eslintConfig": {}
 }

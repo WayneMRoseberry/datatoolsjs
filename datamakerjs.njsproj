@@ -36,7 +36,6 @@
     <Content Include=".eslintrc.json" />
     <Content Include="app.js" />
     <Content Include="pages\documentation.html" />
-    <Content Include="pages\mainindex.js" />
     <Content Include="pages\mainindex.html">
       <SubType>Code</SubType>
     </Content>
@@ -49,6 +48,10 @@
     <Content Include="datamakerlibs\randomDecider.js" />
     <Content Include="datamakerlibs\fileBasedSchemaProvider.js" />
     <Content Include="routes\api.js" />
+    <Content Include="pages\mainindex.js" />
+    <Content Include="src\vizjswrapper.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="test\datamakerunittests.js">
       <SubType>Code</SubType>
       <TestFramework>Jest</TestFramework>
@@ -72,9 +75,13 @@
     <Content Include="views\index.pug" />
     <Content Include="views\layout.pug" />
     <Content Include="views\error.pug" />
+    <Content Include="webpack.config.js">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="datamakerlibs\" />
+    <Folder Include="src\" />
     <Folder Include="scripts\" />
     <Folder Include="pages\" />
     <Folder Include="test\" />
