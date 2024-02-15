@@ -25,9 +25,11 @@ schemaList.addEventListener("change", function (evt) {
     var randomjson = JSON.stringify(randomexample, null, 2);
     var randomelement = document.getElementById('randomexamples');
     randomelement.innerHTML = "";
-    for (var example of randomexample) {
-        randomelement.innerHTML = randomelement.innerHTML + `<span>${example.ExampleValue}</span><br/>`;
+    var blob = '';
+        for (var example of randomexample) {
+        blob = blob + `<tr><td>value:&nbps;</td><td>${example.ExampleValue}</td?</tr>`;
     }
+    randomelement.innerHTML = `<table>${blob}</table>`;
 
 
     var schemaDefJson = getSchemaDefDOTEndpoint(namespace, schemaName);
