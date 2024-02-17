@@ -2,6 +2,17 @@
 const CommonSchema = require('./commonschema');
 const EXTERNALSCHEMAINFINITELOOPDETECTED = "external schema has infinite loop";
 const SCHEMAHASINFINITELOOP = "schema has infinite loop";
+const schemaIDMap = {
+    'ChoiceSchemaObject': 'ch',
+    'OptionalSchemaObject': 'opt',
+    'RangeAlphaSchemaObject': 'ra',
+    'RangeNumericSchemaObject': 'rn',
+    'ReferenceSchemaObject': 'ref',
+    'SchemaDef': 'def',
+    'SequenceSchemaObject': 'seq',
+    'StaticSchemaObject': 'stat'
+};
+
 function getRandomExample(schemaProvider, decider, schemaDef) {
     let root = schemaDef.RootSchemaObject;
     let randomValue = evaluateSchemaObject(schemaProvider, decider, root);
@@ -29,9 +40,10 @@ function schemaHasInfiniteLoop(schemaProvider,namespace, schemaDef, seenAlreadyA
 };
 
 function toDOT(schemaDef) {
-    var thing = 'schemanode:F1->node1:F0;\n'
-    thing = thing + `schemanode [label="<F0>SchemaDef|${schemaDef.Namespace}|${schemaDef.SchemaName}|<F1>", shape="record"];\n`;
-    thing = thing + `${schemaObjectToDOT(schemaDef.RootSchemaObject,1,"node")}`;
+    var childId = `${schemaIDMap["SchemaDef"]}_${schemaIDMap[schemaDef.RootSchemaObject.ObjectTypeName]}1`;
+    var thing = `${schemaIDMap["SchemaDef"]}:F1->${childId}:F0 [id="${schemaIDMap["SchemaDef"]}.${childId}"];\n`;
+    thing = thing + `${schemaIDMap["SchemaDef"]} [id="${schemaIDMap["SchemaDef"]}", label="<F0>SchemaDef|${schemaDef.Namespace}|${schemaDef.SchemaName}|<F1>", shape="record"];\n`;
+    thing = thing + `${schemaObjectToDOT(schemaDef.RootSchemaObject,1,schemaIDMap['SchemaDef'])}`;
     return `digraph{\ngraph [rankdir="LR"]\n${thing}}`;
 };
 
@@ -206,12 +218,12 @@ function schemaObjectToDOT(schemaObject, nodeid, nodeprefix) {
 
     var childrenArray = [];
     var nodePtrArray = [];
-    var nodeIdString = `${nodeprefix}${nodeid}`;
-
     let typeName = "";
     if (typeof schemaObject != 'undefined' && typeof schemaObject.ObjectTypeName != 'undefined') {
         typeName = schemaObject.ObjectTypeName;
     }
+    var nodeIdString = `${nodeprefix}_${schemaIDMap[typeName]}${nodeid}`;
+
     switch (typeName) {
         case "StaticSchemaObject":
             {
@@ -239,10 +251,10 @@ function schemaObjectToDOT(schemaObject, nodeid, nodeprefix) {
                     restofit = restofit + schemaObject.OptionalValue;
                 }
                 else {
-                    var childNodeId = `${nodeIdString}_1`;
-                    childrenArray.push(schemaObjectToDOT(schemaObject.OptionalValue,1, `${nodeIdString}_`));
+                    var childNodeId = `${nodeIdString}_${schemaIDMap[schemaObject.OptionalValue.ObjectTypeName]}1`;
+                    childrenArray.push(schemaObjectToDOT(schemaObject.OptionalValue,1, `${nodeIdString}`));
                     restofit = restofit + '<F1>';
-                    nodePtrArray.push(`${nodeIdString}:<F1> -> ${childNodeId}:<F0>`);
+                    nodePtrArray.push(`${nodeIdString}:<F1> -> ${childNodeId}:<F0> [id="${nodeIdString}.F1.${childNodeId}.F0"]`);
                 }
                 break;
             }
@@ -264,7 +276,7 @@ function schemaObjectToDOT(schemaObject, nodeid, nodeprefix) {
             }
     }
 
-    var objectNodeData = `${nodeIdString} [label="<F0>${schemaObject.ObjectTypeName}|${restofit}", shape="record"];\n`;
+    var objectNodeData = `${nodeIdString} [ id="${nodeIdString}", label="<F0>${schemaObject.ObjectTypeName}|${restofit}", shape="record"];\n`;
     var childString = (childrenArray.length == 0) ? '' : `${childrenArray.join('')}`;
     var nodePtrString = (nodePtrArray.length == 0) ? '' : `${nodePtrArray.join(';\n')};\n`;
 
@@ -281,9 +293,9 @@ function ProcessArrayObjects(itemArray, nodeIdString, nodePtrArray, childrenArra
             currentElemPush = currentObject;
         }
         else {
-            var childNodeId = `${nodeIdString}_${i + 1}`;
-            nodePtrArray.push(`${nodeIdString}:${currentElemPush} -> ${childNodeId}:<F0>`);
-            childrenArray.push(schemaObjectToDOT(currentObject, i + 1, `${nodeIdString}_`));
+            var childNodeId = `${nodeIdString}_${schemaIDMap[currentObject.ObjectTypeName]}${i + 1}`;
+            nodePtrArray.push(`${nodeIdString}:${currentElemPush} -> ${childNodeId}:<F0> [id="${nodeIdString}.F${i+1}.${childNodeId}.F0"]`);
+            childrenArray.push(schemaObjectToDOT(currentObject, i + 1, `${nodeIdString}`));
         }
         seqArray.push(currentElemPush);
     }

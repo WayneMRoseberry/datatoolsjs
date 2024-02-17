@@ -22,19 +22,19 @@ schemaList.addEventListener("change", function (evt) {
 
     var randomexample = getRandomExampleEndpoint(namespace, schemaName);
 
-    var randomjson = JSON.stringify(randomexample, null, 2);
     var randomelement = document.getElementById('randomexamples');
     randomelement.innerHTML = "";
     var blob = '';
-        for (var example of randomexample) {
-        blob = blob + `<tr><td>value:&nbsp;</td><td>${example.ExampleValue}</td?</tr>`;
+    var blobrowctr = 0;
+    for (var example of randomexample) {
+        blob = blob + `<tr><td>value:&nbsp;</td><td id="randexample_${blobrowctr}">${example.ExampleValue}</td?</tr>`;
+        blobrowctr++;
     }
     randomelement.innerHTML = `<table>${blob}</table>`;
 
 
     var schemaDefJson = getSchemaDefDOTEndpoint(namespace, schemaName);
-    var dotElement = document.getElementById("dot");
-    dotElement.innerText = schemaDefJson;
+    loadDOTGraph(schemaDefJson);
 });
 
 
@@ -49,7 +49,7 @@ const getSchemaDefDOTEndpoint = (namespace, schemaname) => {
     const xhttp = new XMLHttpRequest();
     xhttp.open("GET", `../api/schemadef/dot?namespace=${namespace}&schemaname=${schemaname}`, false);
     xhttp.send();
-    loadDOTGraph( xhttp.responseText);
+    return xhttp.responseText;
 };
 
 const getRandomExampleEndpoint = (namespace, schemaname) => {
