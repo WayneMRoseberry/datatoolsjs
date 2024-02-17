@@ -223,7 +223,7 @@ function schemaObjectToDOT(schemaObject, nodeid, nodeprefix) {
                 restofit = restofit + `${schemaObject.MinAlpha}|${schemaObject.MaxAlpha}`;
                 break;
             }
-        case "RangeAlphaNumeric":
+        case "RangeNumericSchemaObject":
             {
                 restofit = restofit + `${schemaObject.MinNumeric}|${schemaObject.MaxNumeric}`;
                 break;

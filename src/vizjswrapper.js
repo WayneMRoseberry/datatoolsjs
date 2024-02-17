@@ -27,7 +27,7 @@ schemaList.addEventListener("change", function (evt) {
     randomelement.innerHTML = "";
     var blob = '';
         for (var example of randomexample) {
-        blob = blob + `<tr><td>value:&nbps;</td><td>${example.ExampleValue}</td?</tr>`;
+        blob = blob + `<tr><td>value:&nbsp;</td><td>${example.ExampleValue}</td?</tr>`;
     }
     randomelement.innerHTML = `<table>${blob}</table>`;
 
