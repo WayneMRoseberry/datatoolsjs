@@ -1,6 +1,7 @@
 'use strict';
 const MAXALPHMUSTBEGREATERTHANOREQUALTOMINALPHA = "maxalpha must be equal to or larger than minalpha";
 const MAXNUMERICMUSTBEGREATERTHANOREQUALTOMINNUMERIC = "maxnumeric must be equal to or larger than minnumeric";
+const MAXNUMBEROFEXAMPLESEXCEEDED = "count must be less than or equal to 100"
 const MUSTBESINGLECHARACTERERROR = "argument must be a single character";
 const MUSTBESTRING = "argument must be a string";
 const NULLVALUEERROR = "value must not be null";
@@ -129,5 +130,5 @@ function toJson(schemaDef) {
 module.exports = {
     ChoiceSchemaObject, OptionalSchemaObject, RangeAlphaSchemaObject, RangeNumericSchemaObject, ReferenceSchemaObject, SchemaDef, SchemaExample, SequenceSchemaObject, StaticSchemaObject,
     loadSchemaDef, toJson,
-    MAXALPHMUSTBEGREATERTHANOREQUALTOMINALPHA, MAXNUMERICMUSTBEGREATERTHANOREQUALTOMINNUMERIC, MUSTBESINGLECHARACTERERROR, MUSTBESTRING, MUSTNOTBEWHITESPACEOREMPTY, NULLVALUEERROR, NONARRAYVALUEERROR
+    MAXALPHMUSTBEGREATERTHANOREQUALTOMINALPHA, MAXNUMBEROFEXAMPLESEXCEEDED, MAXNUMERICMUSTBEGREATERTHANOREQUALTOMINNUMERIC, MUSTBESINGLECHARACTERERROR, MUSTBESTRING, MUSTNOTBEWHITESPACEOREMPTY, NULLVALUEERROR, NONARRAYVALUEERROR
 };

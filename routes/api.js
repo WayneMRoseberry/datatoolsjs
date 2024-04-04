@@ -177,6 +177,10 @@ router.get('/schemadef/getrandomexample', function (req, res) {
     if (typeof req.query.count != 'undefined') {
         count = Number(req.query.count);
     }
+    if (count > 100) {
+        res.status(400)
+        res.send(CommonSchema.MAXNUMBEROFEXAMPLESEXCEEDED)
+    }
     console.log(`schemadef namespace:${namespace}, schemaname:${schemaname}`);
     var resultset = [];
 
