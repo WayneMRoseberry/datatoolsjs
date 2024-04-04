@@ -19,8 +19,9 @@ schemaList.addEventListener("change", function (evt) {
     var jsontext = JSON.stringify(schemaDef, null, 2);
     var schemaBlob = document.getElementById('schemablob');
     schemaBlob.innerHTML = `<pre>${jsontext}</pre>`;
+    var exampleNumberInput = Number(document.getElementById('numberofexamples').value)
 
-    var randomexample = getRandomExampleEndpoint(namespace, schemaName);
+    var randomexample = getRandomExampleEndpoint(namespace, schemaName, exampleNumberInput);
 
     var randomelement = document.getElementById('randomexamples');
     randomelement.innerHTML = "";
@@ -52,9 +53,9 @@ const getSchemaDefDOTEndpoint = (namespace, schemaname) => {
     return xhttp.responseText;
 };
 
-const getRandomExampleEndpoint = (namespace, schemaname) => {
+const getRandomExampleEndpoint = (namespace, schemaname, count) => {
     const xhttp = new XMLHttpRequest();
-    xhttp.open("GET", `../api/schemadef/getrandomexample?namespace=${namespace}&schemaname=${schemaname}&count=10`, false);
+    xhttp.open("GET", `../api/schemadef/getrandomexample?namespace=${namespace}&schemaname=${schemaname}&count=${count}`, false);
     xhttp.send();
     return JSON.parse(xhttp.responseText);
 };
