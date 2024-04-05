@@ -159,6 +159,7 @@ router.post('/schemadef', function (req, res) {
         if (exceptionIsKnownInvalidSchemaConditions(err)) {
             res.status(400);
             response["error"] = `invalid schema: ${err}`;
+            console.log(`error:${err}`);
         }
         else {
             console.log(`error:${err}`);

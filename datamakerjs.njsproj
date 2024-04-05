@@ -36,6 +36,12 @@
     <Content Include=".eslintrc.json" />
     <Content Include="app.js" />
     <Content Include="pages\documentation.html" />
+    <Content Include="pages\editschema.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="pages\editschema.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="pages\mainindex.html">
       <SubType>Code</SubType>
     </Content>
