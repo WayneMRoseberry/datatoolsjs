@@ -40,7 +40,7 @@ const getSchemaDefsEndpoint = (namespace) => {
 const loadeditschemapage = () => {
     var namespace = document.getElementById('namespacelist').value;
     var schemaname = document.getElementById('schemalist').value;
-    location.href = `/pages/editschema.html?namespace=${namespace}&schemaname=${schemaname}`;
+    location.href = `/pages/EditSchema.html?namespace=${namespace}&schemaname=${schemaname}`;
 };
 
 loadNamespaces();
