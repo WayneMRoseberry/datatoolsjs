@@ -37,4 +37,4 @@ const saveSchemaDef = () => {
     return xhttp.responseText;
 };
 
-loadControls();
+//loadControls();
