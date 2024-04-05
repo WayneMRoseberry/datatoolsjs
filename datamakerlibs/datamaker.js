@@ -200,6 +200,14 @@ function schemaObjectHasInfiniteLoop(schemaProvider, schemaDefName, schemaObject
                 }
                 break;
             }
+        case 'StaticSchemaObject':
+            {
+                return false;
+            }
+        case '':
+            {
+                return false;
+            }
         default:
             {
                 throw `invalid SchemaObjectTypeName`;

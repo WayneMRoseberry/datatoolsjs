@@ -410,6 +410,20 @@ describe('DataMaker test suite', function () {
             expect(DataMaker.schemaHasInfiniteLoop(new ProviderMock(), "testnamespace", schemaDef)).toEqual(true);
         });
 
+        it('staticschemaobject', function () {
+            var jsonstring = '{ "SchemaName": "defaultschema", "RootSchemaObject": {"ObjectTypeName": "StaticSchemaObject","StaticValue": "val1"},"Namespace": "schemaexamples"}';
+            var def = JSON.parse(jsonstring);
+            var loops = DataMaker.schemaHasInfiniteLoop(new ProviderMock(), "schemaexamples", def);
+            expect(loops).toEqual(false);
+        })
+
+        it('non-named static value', function () {
+            var jsonstring = '{ "SchemaName": "defaultchoiceschemaexample", "RootSchemaObject": { "ObjectTypeName": "ChoiceSchemaObject", "ChoiceArray": [  "choice1", { "ObjectTypeName": "StaticSchemaObject", "StaticValue": "val1" } ] }, "Namespace": "schemaexamples" }';
+            var def = JSON.parse(jsonstring);
+            var loops = DataMaker.schemaHasInfiniteLoop(new ProviderMock(), "schemaexamples", def);
+            expect(loops).toEqual(false);
+        })
+
         // This doesn't really check anything, I just used it to
         // see what the DOT looked like. I need to write a much
         // better checking routine first.
