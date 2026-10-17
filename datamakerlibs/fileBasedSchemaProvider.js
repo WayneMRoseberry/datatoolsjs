@@ -1,9 +1,11 @@
 ﻿const fs = require('fs');
 const { NULLVALUEERROR, MUSTNOTBEWHITESPACEOREMPTY } = require("./commonschema");
+const { INVALIDNAME, isValidName } = require("./namevalidation");
 
 class FileBasedSchemaProvider {
 
-    schemaStore = {};
+    // store objects have no prototype so names like __proto__ and constructor are ordinary keys
+    schemaStore = Object.create(null);
     _storeFilePath = 'schemaStore.json';
 
     constructor(storeFilePath) {
@@ -14,11 +16,14 @@ class FileBasedSchemaProvider {
             if (schemaDef == null || schemaDef.Namespace == null || schemaDef.SchemaName == null) {
                 throw NULLVALUEERROR;
             }
+            if (!isValidName(schemaDef.Namespace) || !isValidName(schemaDef.SchemaName)) {
+                throw INVALIDNAME;
+            }
 
             console.log(`addSchemaDef, namespace:${schemaDef.Namespace}, schemaname:${schemaDef.SchemaName}, schemaDef:${schemaDef}`);
 
             if (!Object.keys(this.schemaStore).includes(schemaDef.Namespace)) {
-                this.schemaStore[schemaDef.Namespace] = {};
+                this.schemaStore[schemaDef.Namespace] = Object.create(null);
             }
             this.schemaStore[schemaDef.Namespace][schemaDef.SchemaName] = schemaDef;
             var schemaStoreContents = JSON.stringify(this.schemaStore);
@@ -31,6 +36,9 @@ class FileBasedSchemaProvider {
             }
             if (namespace == '' || namespace == ' ' || schemaName == '' || schemaName == '') {
                 throw MUSTNOTBEWHITESPACEOREMPTY;
+            }
+            if (!isValidName(namespace) || !isValidName(schemaName)) {
+                throw INVALIDNAME;
             }
             if (Object.keys(this.schemaStore).includes(namespace)) {
                 var nameslot = this.schemaStore[namespace];
@@ -47,6 +55,9 @@ class FileBasedSchemaProvider {
             if (namespace == null) {
                 throw NULLVALUEERROR;
             }
+            if (!isValidName(namespace)) {
+                throw INVALIDNAME;
+            }
             if (Object.keys(this.schemaStore).includes(namespace)) {
                 return Object.keys(this.schemaStore[namespace]);
             }
@@ -57,7 +68,10 @@ class FileBasedSchemaProvider {
         if (fs.existsSync(this._storeFilePath)) {
             schemaStoreFileContents = fs.readFileSync(this._storeFilePath);
             if (schemaStoreFileContents.length != 0) {
-                this.schemaStore = JSON.parse(schemaStoreFileContents);
+                var parsedStore = JSON.parse(schemaStoreFileContents);
+                for (const namespace of Object.keys(parsedStore)) {
+                    this.schemaStore[namespace] = Object.assign(Object.create(null), parsedStore[namespace]);
+                }
             }
         }
         else {

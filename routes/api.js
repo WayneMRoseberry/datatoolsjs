@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 const CommonSchema = require('../datamakerlibs/commonschema');
 const Datamaker = require('../datamakerlibs/datamaker');
+const { INVALIDNAME, isValidName, findInvalidName } = require('../datamakerlibs/namevalidation');
 
 var provider = null;
 var decider = null;
@@ -11,6 +12,16 @@ router.configure = function (configsettings) {
     provider = configsettings.getSchemaProvider();
     decider = configsettings.getDecider();
 }
+
+// reject any request whose namespace or schemaname query parameter is not a valid name
+router.use(function (req, res, next) {
+    for (const param of ['namespace', 'schemaname']) {
+        if (param in req.query && !isValidName(req.query[param])) {
+            return res.status(400).send({ error: `invalid ${param}: ${INVALIDNAME}` });
+        }
+    }
+    next();
+});
 
 /* GET home page. */
 router.get('/', function (req, res) {
@@ -144,6 +155,9 @@ router.post('/schemadef', function (req, res) {
         if (schemaDef.Namespace == ' ' || schemaDef.Namespace == '' || schemaDef.SchemaName == ' ' || schemaDef.SchemaName == '') {
             throw CommonSchema.MUSTNOTBEWHITESPACEOREMPTY;
         }
+        if (findInvalidName(schemaDef) !== null) {
+            throw INVALIDNAME;
+        }
 
         if (Datamaker.schemaHasInfiniteLoop(provider, schemaDef.Namespace, schemaDef, [])) {
             throw `schema has infinite loop`;
@@ -210,6 +224,7 @@ function exceptionIsKnownInvalidSchemaConditions(err) {
         || err == CommonSchema.MUSTBESTRING
         || err == CommonSchema.MUSTNOTBEWHITESPACEOREMPTY
         || err == CommonSchema.NULLVALUEERROR
+        || err == INVALIDNAME
         || err == CommonSchema.MAXALPHMUSTBEGREATERTHANOREQUALTOMINALPHA
         || err == CommonSchema.MAXNUMERICMUSTBEGREATERTHANOREQUALTOMINNUMERIC;
 }
