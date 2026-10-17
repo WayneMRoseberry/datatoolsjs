@@ -11,8 +11,8 @@ function loadDOTGraph (s) {
 
 
 var schemaList = document.getElementById("schemalist");
-schemaList.addEventListener("change", function (evt) {
-    var schemaName = evt.target.value;
+function showSchema() {
+    var schemaName = schemaList.value;
     var namespace = document.getElementById('namespacelist').value;
 
     var schemaDef = getSchemaDefEndpoint(namespace, schemaName);
@@ -36,7 +36,9 @@ schemaList.addEventListener("change", function (evt) {
 
     var schemaDefJson = getSchemaDefDOTEndpoint(namespace, schemaName);
     loadDOTGraph(schemaDefJson);
-});
+}
+
+schemaList.addEventListener("change", showSchema);
 
 
 const getSchemaDefEndpoint = (namespace, schemaname) => {
@@ -59,3 +61,8 @@ const getRandomExampleEndpoint = (namespace, schemaname, count) => {
     xhttp.send();
     return JSON.parse(xhttp.responseText);
 };
+
+// the list was filled before this script loaded, so display the initially selected schema
+if (schemaList.value) {
+    showSchema();
+}

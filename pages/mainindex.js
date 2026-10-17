@@ -7,6 +7,8 @@ const loadSchemaDefs = (self) => {
         opt.innerHTML = schemadef.name;
         select.appendChild(opt);
     }
+    // filling the list in code does not raise change, so raise it here to display the selected schema
+    select.dispatchEvent(new Event('change'));
 };
 const loadNamespaces = () => {
     const xhttp = new XMLHttpRequest();
